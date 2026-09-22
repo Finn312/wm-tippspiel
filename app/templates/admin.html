@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Admin – Ergebnisse{% endblock %}
+{% block content %}
+<h2>Ergebnisse eintragen</h2>
+<p>
+  <a href="/admin/users">Nutzer anlegen</a>
+  &nbsp;·&nbsp;
+  <a href="/admin/athletes/import">Athleten importieren (CSV)</a>
+  &nbsp;·&nbsp;
+  <a href="/admin/weight-classes">Kampfbeginn-Zeiten bearbeiten</a>
+</p>
+{% for wc in weight_classes %}
+<div class="card">
+  <h3>{{ wc.name }} <span class="muted">({{ wc.tag }})</span></h3>
+  <div id="admin-result-{{ wc.id }}">
+    {% include "_admin_result_fragment.html" %}
+  </div>
+</div>
+{% else %}
+<p class="muted">Keine Gewichtsklassen vorhanden.</p>
+{% endfor %}
+{% endblock %}

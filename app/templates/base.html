@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Judo-WM Tippspiel{% endblock %}</title>
+  <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+  <style>
+    :root {
+      --bg: #f7f7f5;
+      --card-bg: #ffffff;
+      --text: #1a1a1a;
+      --muted: #6b6b6b;
+      --accent: #0f766e;
+      --accent-contrast: #ffffff;
+      --border: #e5e5e0;
+      --locked: #b91c1c;
+      --open: #0f766e;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121212;
+        --card-bg: #1e1e1e;
+        --text: #f1f1f1;
+        --muted: #a3a3a3;
+        --border: #333333;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    nav {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--card-bg);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    nav a { color: var(--text); text-decoration: none; font-weight: 600; }
+    nav a:hover { color: var(--accent); }
+    nav .spacer { flex: 1; }
+    main { max-width: 720px; margin: 0 auto; padding: 1rem; }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .card h3 { margin-top: 0; }
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge.open { background: rgba(15, 118, 110, 0.15); color: var(--open); }
+    .badge.locked { background: rgba(185, 28, 28, 0.15); color: var(--locked); }
+    .countdown { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+    th, td { text-align: left; padding: 0.4rem 0.3rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
+    th { color: var(--muted); font-weight: 600; }
+    a.user-link { color: var(--accent); text-decoration: none; font-weight: 600; }
+    a.user-link:hover { text-decoration: underline; }
+    select, input, button {
+      font-size: 1rem;
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+    }
+    button {
+      background: var(--accent);
+      color: var(--accent-contrast);
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button:hover { opacity: 0.9; }
+    label { display: block; margin-top: 0.75rem; margin-bottom: 0.25rem; font-weight: 600; font-size: 0.9rem; }
+    form.tip-form { display: flex; flex-direction: column; }
+    .error { color: var(--locked); font-weight: 600; margin: 0.5rem 0; }
+    .success { color: var(--open); font-weight: 600; margin: 0.5rem 0; }
+    .muted { color: var(--muted); font-size: 0.85rem; }
+    .rank-1 { font-weight: 700; }
+    .name-tile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.15rem;
+      padding: 0.75rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--card-bg);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .name-tile:hover { border-color: var(--accent); }
+    details.info-toggle summary {
+      cursor: pointer;
+      font-weight: 600;
+      padding: 0.25rem 0;
+    }
+    details.info-toggle summary::marker { content: ""; }
+    details.info-toggle[open] summary { margin-bottom: 0.75rem; }
+    .info-content h3 { margin: 1.1rem 0 0.35rem; }
+    .info-content h3:first-child { margin-top: 0; }
+    .info-content p { margin: 0.25rem 0 0.6rem; }
+    .info-content ul { margin: 0.25rem 0 0.6rem 1.2rem; padding: 0; }
+    .info-content li { margin-bottom: 0.25rem; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="/">Tagesansicht</a>
+    {% if current_user %}<a href="/my-tips">Meine Tipps</a>{% endif %}
+    <a href="/leaderboard">Leaderboard</a>
+    <a href="/info">Info</a>
+    <div class="spacer"></div>
+    {% if current_user %}
+      <span class="muted">{{ current_user.name }}</span>
+      <form method="post" action="/logout" style="margin:0;">
+        <button type="submit" style="padding:0.3rem 0.6rem;">Logout</button>
+      </form>
+    {% else %}
+      <a href="/login">Login</a>
+    {% endif %}
+  </nav>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <script>
+    function startCountdowns() {
+      document.querySelectorAll('[data-countdown]:not([data-countdown-init])').forEach(function (el) {
+        el.setAttribute('data-countdown-init', '1');
+        const target = new Date(el.dataset.countdown).getTime();
+        function tick() {
+          const diff = target - Date.now();
+          if (diff <= 0) {
+            el.textContent = 'Kampf laeuft / vorbei';
+            return;
+          }
+          const h = Math.floor(diff / 3600000);
+          const m = Math.floor((diff % 3600000) / 60000);
+          const s = Math.floor((diff % 60000) / 1000);
+          el.textContent = 'Start in ' + h + 'h ' + String(m).padStart(2, '0') + 'm ' + String(s).padStart(2, '0') + 's';
+        }
+        tick();
+        setInterval(tick, 1000);
+      });
+    }
+    document.addEventListener('DOMContentLoaded', startCountdowns);
+    document.body.addEventListener('htmx:afterSwap', startCountdowns);
+  </script>
+</body>
+</html>

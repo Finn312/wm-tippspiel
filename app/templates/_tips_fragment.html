@@ -1,0 +1,42 @@
+{% if wc.locked %}
+  <span class="badge locked">Gesperrt</span>
+{% else %}
+  <span class="badge open">Offen</span>
+{% endif %}
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Platz 1</th>
+      <th>Platz 2</th>
+      <th>Bronze</th>
+      {% if wc.show_points %}<th>Punkte</th>{% endif %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in wc.tip_rows %}
+    <tr>
+      <td><a class="user-link" href="/users/{{ t.user_id }}">{{ t.user_name }}</a></td>
+      {% if t.visible %}
+        <td>{{ t.platz_1_name or "–" }}</td>
+        <td>{{ t.platz_2_name or "–" }}</td>
+        <td>{{ t.platz_3a_name or "–" }}{% if t.platz_3b_name %} / {{ t.platz_3b_name }}{% endif %}</td>
+        {% if wc.show_points %}<td>{{ t.points if t.points is not none else "–" }}</td>{% endif %}
+      {% else %}
+        <td colspan="{{ 4 if wc.show_points else 3 }}" class="muted">🔒 getippt – verborgen bis Kampfbeginn</td>
+      {% endif %}
+    </tr>
+    {% else %}
+    <tr><td colspan="{{ 5 if wc.show_points else 4 }}" class="muted">Noch keine Tipps abgegeben.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% if wc.editable %}
+  {% if wc.logged_in %}
+    <p><a href="/weight-classes/{{ wc.id }}/tip">{% if wc.my_tip %}Tipp bearbeiten{% else %}Tipp abgeben{% endif %}</a></p>
+  {% else %}
+    <p class="muted"><a href="/login">Einloggen</a>, um zu tippen.</p>
+  {% endif %}
+{% endif %}

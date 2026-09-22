@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Tipp: {{ wc.name }}{% endblock %}
+{% block content %}
+<h2>{{ wc.name }}</h2>
+<div class="countdown" data-countdown="{{ wc.kampfbeginn_iso }}"></div>
+<div class="card" id="tip-form-wrapper">
+  {% include "_tip_form_fragment.html" %}
+</div>
+<p><a href="/day/{{ wc.tag }}">&larr; zurueck zur Tagesansicht</a></p>
+{% endblock %}

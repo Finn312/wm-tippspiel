@@ -1,0 +1,39 @@
+{% if wc.locked %}
+  <p class="error">Das Tipp-Fenster ist bereits geschlossen.</p>
+{% else %}
+  {% if success %}<p class="success">Gespeichert.</p>{% endif %}
+  {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  <form class="tip-form" hx-post="/weight-classes/{{ wc.id }}/tip" hx-target="#tip-form-wrapper" hx-swap="innerHTML">
+    <label for="platz_1">Platz 1</label>
+    <select name="platz_1" id="platz_1">
+      <option value="">–</option>
+      {% for a in athletes %}
+        <option value="{{ a.id }}" {% if tip and tip.platz_1 == a.id %}selected{% endif %}>{{ a.name }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="platz_2">Platz 2</label>
+    <select name="platz_2" id="platz_2">
+      <option value="">–</option>
+      {% for a in athletes %}
+        <option value="{{ a.id }}" {% if tip and tip.platz_2 == a.id %}selected{% endif %}>{{ a.name }}</option>
+      {% endfor %}
+    </select>
+
+    <label for="platz_3a">Bronze (Platz 3, Reihenfolge egal)</label>
+    <select name="platz_3a" id="platz_3a">
+      <option value="">–</option>
+      {% for a in athletes %}
+        <option value="{{ a.id }}" {% if tip and tip.platz_3a == a.id %}selected{% endif %}>{{ a.name }}</option>
+      {% endfor %}
+    </select>
+    <select name="platz_3b" id="platz_3b" style="margin-top:0.5rem;">
+      <option value="">–</option>
+      {% for a in athletes %}
+        <option value="{{ a.id }}" {% if tip and tip.platz_3b == a.id %}selected{% endif %}>{{ a.name }}</option>
+      {% endfor %}
+    </select>
+
+    <button type="submit" style="margin-top:1rem;">Speichern</button>
+  </form>
+{% endif %}

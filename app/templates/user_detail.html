@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ target_user.name }} – Tipps{% endblock %}
+{% block content %}
+<h2>{{ target_user.name }}</h2>
+
+{% for row in rows %}
+<div class="card">
+  <h3>{{ row.wc_name }}</h3>
+  {% if row.visible %}
+    {% if row.tip %}
+      <table>
+        <thead><tr><th>Platz 1</th><th>Platz 2</th><th>Bronze</th>{% if row.points is not none %}<th>Punkte</th>{% endif %}</tr></thead>
+        <tbody>
+          <tr>
+            <td>{{ row.tip.platz_1_name or "–" }}</td>
+            <td>{{ row.tip.platz_2_name or "–" }}</td>
+            <td>{{ row.tip.platz_3a_name or "–" }}{% if row.tip.platz_3b_name %} / {{ row.tip.platz_3b_name }}{% endif %}</td>
+            {% if row.points is not none %}<td>{{ row.points }}</td>{% endif %}
+          </tr>
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">Kein Tipp abgegeben.</p>
+    {% endif %}
+  {% else %}
+    {% if row.has_tip %}
+      <p class="muted">🔒 getippt – verborgen bis Kampfbeginn.</p>
+    {% else %}
+      <p class="muted">Noch nicht getippt.</p>
+    {% endif %}
+  {% endif %}
+</div>
+{% else %}
+<p class="muted">Keine Gewichtsklassen vorhanden.</p>
+{% endfor %}
+{% endblock %}

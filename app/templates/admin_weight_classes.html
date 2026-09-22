@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Admin – Kampfbeginn{% endblock %}
+{% block content %}
+<h2>Kampfbeginn bearbeiten</h2>
+{% for wc in weight_classes %}
+<div class="card">
+  <div id="wc-edit-{{ wc.id }}">
+    {% include "_admin_weight_class_fragment.html" %}
+  </div>
+</div>
+{% else %}
+<p class="muted">Keine Gewichtsklassen vorhanden.</p>
+{% endfor %}
+<p><a href="/admin">&larr; zurueck</a></p>
+{% endblock %}

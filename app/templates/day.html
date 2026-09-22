@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Tagesansicht{% endblock %}
+{% block content %}
+<div class="card">
+  <label for="tag-picker">Tag</label>
+  <input type="date" id="tag-picker" value="{{ tag }}" onchange="location.href='/day/' + this.value">
+</div>
+
+{% if weight_classes|length == 0 %}
+  <p class="muted">Keine Gewichtsklassen an diesem Tag.</p>
+{% endif %}
+
+{% for wc in weight_classes %}
+<div class="card">
+  <h3>{{ wc.name }}</h3>
+  <div class="countdown" data-countdown="{{ wc.kampfbeginn_iso }}"></div>
+  <div id="wc-{{ wc.id }}-tips"
+       hx-get="/partials/weight-classes/{{ wc.id }}/tips"
+       hx-trigger="every 5s"
+       hx-swap="innerHTML">
+    {% include "_tips_fragment.html" %}
+  </div>
+</div>
+{% endfor %}
+{% endblock %}

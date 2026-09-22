@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Admin – Athleten-Import{% endblock %}
+{% block content %}
+<h2>Athleten-Import (CSV)</h2>
+<div class="card">
+  <p class="muted">Spalten: weight_class, name, nation, nation_code, gender, wrl_rank.
+  Der Wert in <code>weight_class</code> muss exakt einer bestehenden Gewichtsklasse entsprechen.</p>
+  <form method="post" action="/admin/athletes/import" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".csv" required>
+    <button type="submit" style="margin-top:1rem;">Importieren</button>
+  </form>
+</div>
+
+{% if result %}
+<div class="card">
+  <p class="success">{{ result.created }} neu angelegt, {{ result.updated }} aktualisiert.</p>
+  {% if result.unmatched %}
+    <p class="error">Nicht gefundene Gewichtsklassen (Athleten uebersprungen):</p>
+    <ul>
+      {% for name, count in result.unmatched.items() %}
+        <li>„{{ name }}" ({{ count }} Athlet(en))</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</div>
+{% endif %}
+
+<p><a href="/admin">&larr; zurueck</a></p>
+{% endblock %}

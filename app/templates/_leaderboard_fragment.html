@@ -1,0 +1,12 @@
+<table>
+  <thead><tr><th>#</th><th>Name</th><th>Punkte</th></tr></thead>
+  <tbody>
+    {% for entry in entries %}
+    <tr class="{{ 'rank-1' if loop.index == 1 else '' }}">
+      <td>{{ loop.index }}</td>
+      <td>{{ entry.name }}</td>
+      <td>{{ entry.points }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

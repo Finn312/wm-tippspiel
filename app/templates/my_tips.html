@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Meine Tipps{% endblock %}
+{% block content %}
+<h2>Meine Tipps</h2>
+<div class="card">
+  <table>
+    <thead>
+      <tr>
+        <th>Gewichtsklasse</th>
+        <th>Status</th>
+        <th>Mein Tipp</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for row in rows %}
+      <tr>
+        <td>{{ row.name }}</td>
+        <td>
+          {% if row.editable %}
+            <span class="badge open">Offen</span>
+          {% else %}
+            <span class="badge locked">Gesperrt</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if row.tip %}
+            Platz 1: {{ row.tip.platz_1_name or "–" }}<br>
+            Platz 2: {{ row.tip.platz_2_name or "–" }}<br>
+            Bronze: {{ row.tip.platz_3a_name or "–" }}{% if row.tip.platz_3b_name %} / {{ row.tip.platz_3b_name }}{% endif %}
+          {% else %}
+            <span class="muted">Kein Tipp abgegeben.</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if row.editable %}
+            <a href="/weight-classes/{{ row.id }}/tip">{% if row.tip %}Bearbeiten{% else %}Tippen{% endif %}</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4" class="muted">Keine Gewichtsklassen vorhanden.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

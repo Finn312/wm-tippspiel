@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Login – {{ user.name }}{% endblock %}
+{% block content %}
+<h2>{{ user.name }}</h2>
+<div class="card">
+  {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  {% if has_pin %}
+    <form method="post" action="/login/{{ user.id }}">
+      <label for="pin">PIN</label>
+      <input type="password" name="pin" id="pin" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" required autocomplete="off" autofocus>
+      <button type="submit" style="margin-top:1rem;">Login</button>
+    </form>
+  {% else %}
+    <p class="muted">Noch keine PIN gesetzt. Leg jetzt eine 4-stellige PIN fest, um dich einzuloggen.</p>
+    <form method="post" action="/login/{{ user.id }}">
+      <label for="pin">Neue PIN (4 Ziffern)</label>
+      <input type="password" name="pin" id="pin" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" required autocomplete="off" autofocus>
+      <button type="submit" style="margin-top:1rem;">PIN festlegen &amp; einloggen</button>
+    </form>
+  {% endif %}
+</div>
+<p><a href="/login">&larr; anderer Nutzer</a></p>
+{% endblock %}

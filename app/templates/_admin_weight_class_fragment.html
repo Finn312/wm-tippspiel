@@ -1,0 +1,7 @@
+{% if wc.success %}<p class="success">Gespeichert.</p>{% endif %}
+{% if wc.error %}<p class="error">{{ wc.error }}</p>{% endif %}
+<form class="tip-form" hx-post="/admin/weight-classes/{{ wc.id }}" hx-target="#wc-edit-{{ wc.id }}" hx-swap="innerHTML">
+  <label>{{ wc.name }}</label>
+  <input type="datetime-local" name="kampfbeginn" value="{{ wc.kampfbeginn_input }}" required>
+  <button type="submit" style="margin-top:0.5rem;">Speichern</button>
+</form>
