@@ -9,12 +9,22 @@
   {% if row.visible %}
     {% if row.tip %}
       <table>
-        <thead><tr><th>Platz 1</th><th>Platz 2</th><th>Bronze</th>{% if row.points is not none %}<th>Punkte</th>{% endif %}</tr></thead>
+        <thead>
+          <tr>
+            <th><span class="rank-chip gold">1</span>Platz 1</th>
+            <th><span class="rank-chip silver">2</span>Platz 2</th>
+            <th><span class="rank-chip bronze">3</span>Bronze</th>
+            {% if row.points is not none %}<th>Punkte</th>{% endif %}
+          </tr>
+        </thead>
         <tbody>
           <tr>
-            <td>{{ row.tip.platz_1_name or "–" }}</td>
-            <td>{{ row.tip.platz_2_name or "–" }}</td>
-            <td>{{ row.tip.platz_3a_name or "–" }}{% if row.tip.platz_3b_name %} / {{ row.tip.platz_3b_name }}{% endif %}</td>
+            <td class="td-gold">{{ row.tip.platz_1_name or "–" }}</td>
+            <td class="td-silver">{{ row.tip.platz_2_name or "–" }}</td>
+            <td class="td-bronze">
+              <div class="bronze-pick">{{ row.tip.platz_3a_name or "–" }}</div>
+              <div class="bronze-pick">{{ row.tip.platz_3b_name or "–" }}</div>
+            </td>
             {% if row.points is not none %}<td>{{ row.points }}</td>{% endif %}
           </tr>
         </tbody>

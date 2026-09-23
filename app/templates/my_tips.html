@@ -25,9 +25,10 @@
         </td>
         <td>
           {% if row.tip %}
-            Platz 1: {{ row.tip.platz_1_name or "–" }}<br>
-            Platz 2: {{ row.tip.platz_2_name or "–" }}<br>
-            Bronze: {{ row.tip.platz_3a_name or "–" }}{% if row.tip.platz_3b_name %} / {{ row.tip.platz_3b_name }}{% endif %}
+            <div class="bronze-row"><span class="rank-chip gold">1</span><span class="bronze-value">{{ row.tip.platz_1_name or "–" }}</span></div>
+            <div class="bronze-row"><span class="rank-chip silver">2</span><span class="bronze-value">{{ row.tip.platz_2_name or "–" }}</span></div>
+            <div class="bronze-row"><span class="bronze-label">Bronze</span><span class="bronze-value">{{ row.tip.platz_3a_name or "–" }}</span></div>
+            <div class="bronze-row"><span class="bronze-label">Bronze</span><span class="bronze-value">{{ row.tip.platz_3b_name or "–" }}</span></div>
           {% else %}
             <span class="muted">Kein Tipp abgegeben.</span>
           {% endif %}

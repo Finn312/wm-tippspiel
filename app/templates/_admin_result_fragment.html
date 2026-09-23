@@ -1,28 +1,29 @@
 {% if wc.success %}<p class="success">Gespeichert.</p>{% endif %}
 {% if wc.error %}<p class="error">{{ wc.error }}</p>{% endif %}
 <form class="tip-form" hx-post="/admin/results/{{ wc.id }}" hx-target="#admin-result-{{ wc.id }}" hx-swap="innerHTML">
-  <label>Platz 1</label>
+  <label><span class="rank-chip gold">1</span>Platz 1</label>
   <select name="platz_1">
     <option value="">–</option>
     {% for a in wc.athletes %}
       <option value="{{ a.id }}" {% if wc.result and wc.result.platz_1 == a.id %}selected{% endif %}>{{ a.name }}</option>
     {% endfor %}
   </select>
-  <label>Platz 2</label>
+  <label><span class="rank-chip silver">2</span>Platz 2</label>
   <select name="platz_2">
     <option value="">–</option>
     {% for a in wc.athletes %}
       <option value="{{ a.id }}" {% if wc.result and wc.result.platz_2 == a.id %}selected{% endif %}>{{ a.name }}</option>
     {% endfor %}
   </select>
-  <label>Bronze</label>
+  <label><span class="rank-chip bronze">3</span>Bronze</label>
   <select name="platz_3a">
     <option value="">–</option>
     {% for a in wc.athletes %}
       <option value="{{ a.id }}" {% if wc.result and wc.result.platz_3a == a.id %}selected{% endif %}>{{ a.name }}</option>
     {% endfor %}
   </select>
-  <select name="platz_3b" style="margin-top:0.5rem;">
+  <label><span class="rank-chip bronze">3</span>Bronze</label>
+  <select name="platz_3b">
     <option value="">–</option>
     {% for a in wc.athletes %}
       <option value="{{ a.id }}" {% if wc.result and wc.result.platz_3b == a.id %}selected{% endif %}>{{ a.name }}</option>
