@@ -2,7 +2,7 @@
 
 Kampfbeginn ist auf 10:00 Uhr am jeweiligen Tag gesetzt (Platzhalter, da der
 offizielle Sessionplan nur Tage nennt, keine Uhrzeiten). Vor dem Turnier
-bitte pruefen/anpassen.
+bitte prüfen/anpassen.
 
 Revision ID: 0003
 Revises: 0002
@@ -27,7 +27,7 @@ weight_classes_table = sa.table(
     sa.column("tag", sa.Date),
 )
 
-# (Datum, Maenner-Klasse, Frauen-Klasse) - Namen exakt wie in der Athleten-CSV
+# (Datum, Männer-Klasse, Frauen-Klasse) - Namen exakt wie in der Athleten-CSV
 SCHEDULE = [
     ("2026-10-04", "Männer -60kg (Extra-lightweight)", "Frauen -48kg (Extra-lightweight)"),
     ("2026-10-05", "Männer -66kg (Half-lightweight)", "Frauen -52kg (Half-lightweight)"),

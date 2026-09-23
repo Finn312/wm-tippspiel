@@ -62,7 +62,7 @@ def get_current_user(
     authorization: str | None = Header(default=None),
     db: Session = Depends(get_db),
 ) -> User:
-    """Fuer die JSON-API: Bearer-Header oder Session-Cookie, sonst 401."""
+    """Für die JSON-API: Bearer-Header oder Session-Cookie, sonst 401."""
     user = _user_from_token(_token_from_request(request, authorization), db)
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Nicht eingeloggt")
@@ -74,7 +74,7 @@ def get_current_user_optional(
     authorization: str | None = Header(default=None),
     db: Session = Depends(get_db),
 ) -> User | None:
-    """Fuer HTML-Seiten: liefert None statt 401, damit die Route selbst redirecten kann."""
+    """Für HTML-Seiten: liefert None statt 401, damit die Route selbst redirecten kann."""
     return _user_from_token(_token_from_request(request, authorization), db)
 
 

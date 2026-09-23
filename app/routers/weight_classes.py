@@ -14,12 +14,12 @@ EDIT_CUTOFF = timedelta(minutes=30)
 
 
 def is_locked(weight_class: WeightClass) -> bool:
-    """Reveal-Sperre: ab kampfbeginn sind Tipps aller Nutzer fuer alle sichtbar."""
+    """Reveal-Sperre: ab kampfbeginn sind Tipps aller Nutzer für alle sichtbar."""
     return datetime.now() >= weight_class.kampfbeginn
 
 
 def is_edit_locked(weight_class: WeightClass) -> bool:
-    """Editier-Sperre: Tipps sind nur bis 30 Minuten vor kampfbeginn aenderbar."""
+    """Editier-Sperre: Tipps sind nur bis 30 Minuten vor kampfbeginn änderbar."""
     return datetime.now() >= weight_class.kampfbeginn - EDIT_CUTOFF
 
 

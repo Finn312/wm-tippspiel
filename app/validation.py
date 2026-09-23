@@ -19,5 +19,5 @@ def validate_athlete_slots(slots: list[int | None], weight_class_id: int, db: Se
         if count != len(chosen):
             raise HTTPException(
                 status_code=400,
-                detail="Ein Athlet gehoert nicht zu dieser Gewichtsklasse",
+                detail="Ein Athlet gehört nicht zu dieser Gewichtsklasse",
             )

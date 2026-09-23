@@ -206,7 +206,7 @@ def admin_weight_class_submit(
     try:
         parsed = datetime.strptime(kampfbeginn, "%Y-%m-%dT%H:%M")
     except ValueError:
-        error = "Ungueltiges Datum/Uhrzeit-Format"
+        error = "Ungültiges Datum/Uhrzeit-Format"
     else:
         wc.kampfbeginn = parsed
         wc.tag = parsed.date()

@@ -15,7 +15,7 @@
 <div class="card">
   <p class="success">{{ result.created }} neu angelegt, {{ result.updated }} aktualisiert.</p>
   {% if result.unmatched %}
-    <p class="error">Nicht gefundene Gewichtsklassen (Athleten uebersprungen):</p>
+    <p class="error">Nicht gefundene Gewichtsklassen (Athleten übersprungen):</p>
     <ul>
       {% for name, count in result.unmatched.items() %}
         <li>„{{ name }}" ({{ count }} Athlet(en))</li>
@@ -25,5 +25,5 @@
 </div>
 {% endif %}
 
-<p><a href="/admin">&larr; zurueck</a></p>
+<p><a href="/admin">&larr; zurück</a></p>
 {% endblock %}

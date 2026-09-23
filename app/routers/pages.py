@@ -23,12 +23,12 @@ WM_END = date(2026, 10, 11)
 
 
 def _wc_context(db: Session, wc: WeightClass, current_user: User | None) -> dict:
-    """Kontext fuer die Tipp-Tabelle einer Gewichtsklasse.
+    """Kontext für die Tipp-Tabelle einer Gewichtsklasse.
 
     Vor Kampfbeginn ist nur der eigene Tipp mit Inhalt sichtbar - alle anderen
-    Zeilen (auch fuer nicht eingeloggte Besucher) zeigen nur, dass ueberhaupt
+    Zeilen (auch für nicht eingeloggte Besucher) zeigen nur, dass überhaupt
     getippt wurde, ohne die Auswahl preiszugeben. Nach Kampfbeginn ist alles
-    fuer alle sichtbar, auch ohne Login.
+    für alle sichtbar, auch ohne Login.
     """
     locked = is_locked(wc)
     tips = db.query(Tip).filter(Tip.weight_class_id == wc.id).all()
