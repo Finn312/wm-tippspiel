@@ -8,13 +8,17 @@ from app.models import Athlete, Tip, User, WeightClass
 from app.routers.tips import apply_tip
 from app.routers.weight_classes import is_edit_locked
 from app.schemas import TipIn
+from app.sorting import athlete_surname_key
 from app.templating import templates
 
 router = APIRouter(tags=["tip-pages"])
 
 
 def _form_context(db: Session, wc: WeightClass, current_user: User) -> dict:
-    athletes = db.query(Athlete).filter(Athlete.weight_class_id == wc.id).all()
+    athletes = sorted(
+        db.query(Athlete).filter(Athlete.weight_class_id == wc.id).all(),
+        key=lambda a: athlete_surname_key(a.name),
+    )
     tip = (
         db.query(Tip)
         .filter(Tip.weight_class_id == wc.id, Tip.user_id == current_user.id)

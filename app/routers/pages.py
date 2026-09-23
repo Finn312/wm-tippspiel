@@ -11,6 +11,7 @@ from app.models import Athlete, Result, Tip, User, WeightClass
 from app.routers.leaderboard import compute_leaderboard
 from app.routers.weight_classes import is_edit_locked, is_locked
 from app.scoring import score_tip
+from app.sorting import surname_key
 from app.templating import templates
 
 router = APIRouter(tags=["pages"])
@@ -97,7 +98,7 @@ def login_page(
 ):
     if current_user is not None:
         return RedirectResponse(url="/", status_code=303)
-    users = db.query(User).order_by(User.name).all()
+    users = sorted(db.query(User).all(), key=lambda u: surname_key(u.name))
     return templates.TemplateResponse("login.html", {"request": request, "current_user": None, "users": users})
 
 

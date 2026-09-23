@@ -10,6 +10,7 @@ from app.auth import ADMIN_COOKIE, ADMIN_SECRET, is_admin_request
 from app.database import get_db
 from app.models import Athlete, Result, Tip, User, WeightClass
 from app.schemas import ResultIn
+from app.sorting import athlete_surname_key, surname_key
 from app.templating import templates
 from app.validation import validate_athlete_slots
 
@@ -21,7 +22,10 @@ def _result_context(db: Session, wc: WeightClass) -> dict:
         "id": wc.id,
         "name": wc.name,
         "tag": wc.tag.isoformat(),
-        "athletes": db.query(Athlete).filter(Athlete.weight_class_id == wc.id).all(),
+        "athletes": sorted(
+            db.query(Athlete).filter(Athlete.weight_class_id == wc.id).all(),
+            key=lambda a: athlete_surname_key(a.name),
+        ),
         "result": db.get(Result, wc.id),
         "success": False,
         "error": None,
@@ -123,7 +127,7 @@ def _wc_edit_context(wc: WeightClass, success: bool = False, error: str | None =
 def admin_users_page(request: Request, db: Session = Depends(get_db)):
     if not is_admin_request(request):
         return RedirectResponse(url="/admin/login", status_code=303)
-    users = db.query(User).order_by(User.name).all()
+    users = sorted(db.query(User).all(), key=lambda u: surname_key(u.name))
     return templates.TemplateResponse(
         "admin_users.html", {"request": request, "current_user": None, "users": users, "error": None}
     )
@@ -147,7 +151,7 @@ def admin_users_create(request: Request, name: str = Form(...), db: Session = De
         db.add(User(name=name, pin=None))
         db.commit()
 
-    users = db.query(User).order_by(User.name).all()
+    users = sorted(db.query(User).all(), key=lambda u: surname_key(u.name))
     return templates.TemplateResponse(
         "admin_users.html", {"request": request, "current_user": None, "users": users, "error": error}
     )
@@ -167,7 +171,7 @@ def admin_users_delete(user_id: int, request: Request, db: Session = Depends(get
         db.delete(user)
         db.commit()
 
-    users = db.query(User).order_by(User.name).all()
+    users = sorted(db.query(User).all(), key=lambda u: surname_key(u.name))
     return templates.TemplateResponse(
         "admin_users.html", {"request": request, "current_user": None, "users": users, "error": error}
     )

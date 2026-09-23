@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import Athlete, WeightClass
 from app.schemas import AthleteOut, WeightClassOut
+from app.sorting import athlete_surname_key
 
 router = APIRouter(prefix="/weight-classes", tags=["weight-classes"])
 
@@ -50,4 +51,5 @@ def list_athletes(weight_class_id: int, db: Session = Depends(get_db)):
     wc = db.get(WeightClass, weight_class_id)
     if wc is None:
         raise HTTPException(status_code=404, detail="Gewichtsklasse nicht gefunden")
-    return db.query(Athlete).filter(Athlete.weight_class_id == weight_class_id).all()
+    athletes = db.query(Athlete).filter(Athlete.weight_class_id == weight_class_id).all()
+    return sorted(athletes, key=lambda a: athlete_surname_key(a.name))
