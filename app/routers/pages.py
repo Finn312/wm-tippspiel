@@ -216,6 +216,7 @@ def my_tips_page(
             .first()
         )
         tip_out = None
+        points = None
         if t is not None:
             athletes = {
                 a.id: a.name
@@ -227,6 +228,9 @@ def my_tips_page(
                 "platz_3a_name": athletes.get(t.platz_3a),
                 "platz_3b_name": athletes.get(t.platz_3b),
             }
+            result = db.get(Result, wc.id)
+            if result is not None:
+                points = score_tip(t, result)
 
         rows.append(
             {
@@ -234,6 +238,7 @@ def my_tips_page(
                 "name": wc.name,
                 "editable": not is_edit_locked(wc),
                 "tip": tip_out,
+                "points": points,
             }
         )
 

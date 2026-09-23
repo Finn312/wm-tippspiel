@@ -10,6 +10,7 @@
         <th>Gewichtsklasse</th>
         <th>Status</th>
         <th>Mein Tipp</th>
+        <th>Punkte</th>
         <th></th>
       </tr>
     </thead>
@@ -36,6 +37,7 @@
             <span class="muted">Kein Tipp abgegeben.</span>
           {% endif %}
         </td>
+        <td>{{ row.points if row.points is not none else "–" }}</td>
         <td>
           {% if row.editable %}
             <a href="/weight-classes/{{ row.id }}/tip">{% if row.tip %}Bearbeiten{% else %}Tippen{% endif %}</a>
@@ -43,7 +45,7 @@
         </td>
       </tr>
       {% else %}
-      <tr><td colspan="4" class="muted">Keine Gewichtsklassen vorhanden.</td></tr>
+      <tr><td colspan="5" class="muted">Keine Gewichtsklassen vorhanden.</td></tr>
       {% endfor %}
     </tbody>
   </table>
