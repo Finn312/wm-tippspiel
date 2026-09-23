@@ -7,73 +7,82 @@
   <script src="https://unpkg.com/htmx.org@1.9.12"></script>
   <style>
     :root {
-      --bg: #f3f6f2;
-      --card-bg: #ffffff;
-      --card-bg-alt: #fafcf9;
-      --text: #16201a;
-      --muted: #5a655e;
-      --accent: #16a34a;
-      --accent-dark: #0f7d38;
-      --accent-soft: rgba(22, 163, 74, 0.12);
+      --bg: #f0f0f2;
+      --card-bg: #fafafa;
+      --card-bg-alt: #f4f4f5;
+      --text: #18181b;
+      --muted: #6b6b70;
+      --accent: #4f46e5;
+      --accent-dark: #4338ca;
+      --accent-soft: rgba(79, 70, 229, 0.12);
       --accent-contrast: #ffffff;
-      --border: #dde5da;
+      --border: #e4e4e7;
       --locked-bg: #dc2626;
       --locked: #b91c1c;
-      --open-bg: #16a34a;
-      --open: #0f7d38;
+      --success: #16a34a;
       --gold: #eab308;
       --gold-contrast: #3f2d00;
+      --gold-bg: rgba(234, 179, 8, 0.14);
       --silver: #94a3b8;
       --silver-contrast: #1f2937;
+      --silver-bg: rgba(100, 116, 139, 0.12);
       --bronze: #b45309;
       --bronze-contrast: #ffffff;
-      --shadow: 0 1px 2px rgba(15, 40, 20, 0.06), 0 8px 20px rgba(15, 40, 20, 0.07);
+      --bronze-bg: rgba(180, 83, 9, 0.14);
+      --shadow: 0 1px 2px rgba(24, 24, 27, 0.06), 0 8px 20px rgba(24, 24, 27, 0.07);
+      --card-watermark: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20140%22%3E%3Cg%20fill%3D%22%23000000%22%20opacity%3D%220.06%22%3E%3Ccircle%20cx%3D%2252%22%20cy%3D%2228%22%20r%3D%2211%22%2F%3E%3Cpolygon%20points%3D%2238%2C40%2066%2C40%2074%2C92%2030%2C92%22%2F%3E%3Crect%20x%3D%2232%22%20y%3D%2276%22%20width%3D%2240%22%20height%3D%226%22%2F%3E%3Cpath%20d%3D%22M40%2092%20L30%20132%20L40%20132%20L48%2096%20Z%22%2F%3E%3Cpath%20d%3D%22M62%2092%20L74%20128%20L64%20132%20L54%2096%20Z%22%2F%3E%3Cpath%20d%3D%22M64%2046%20L108%2054%20L104%2062%20L60%2054%20Z%22%2F%3E%3Ccircle%20cx%3D%22148%22%20cy%3D%2228%22%20r%3D%2211%22%2F%3E%3Cpolygon%20points%3D%22162%2C40%20134%2C40%20126%2C92%20170%2C92%22%2F%3E%3Crect%20x%3D%22128%22%20y%3D%2276%22%20width%3D%2240%22%20height%3D%226%22%2F%3E%3Cpath%20d%3D%22M160%2092%20L170%20132%20L160%20132%20L152%2096%20Z%22%2F%3E%3Cpath%20d%3D%22M138%2092%20L126%20128%20L136%20132%20L146%2096%20Z%22%2F%3E%3Cpath%20d%3D%22M136%2046%20L92%2054%20L96%2062%20L140%2054%20Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #10160f;
-        --card-bg: #1a2119;
-        --card-bg-alt: #1f2820;
-        --text: #f0f3ef;
-        --muted: #b7c0b6;
-        --accent: #22c55e;
-        --accent-dark: #16a34a;
-        --accent-soft: rgba(34, 197, 94, 0.18);
-        --border: #38453a;
+        --bg: #121214;
+        --card-bg: #1c1c1f;
+        --card-bg-alt: #212124;
+        --text: #f4f4f5;
+        --muted: #a1a1aa;
+        --accent: #6366f1;
+        --accent-dark: #4f46e5;
+        --accent-soft: rgba(99, 102, 241, 0.18);
+        --border: #3f3f46;
         --locked-bg: #ef4444;
         --locked: #fca5a5;
-        --open-bg: #22c55e;
-        --open: #4ade80;
+        --success: #22c55e;
         --gold: #facc15;
         --gold-contrast: #3f2d00;
+        --gold-bg: rgba(250, 204, 21, 0.18);
         --silver: #cbd5e1;
         --silver-contrast: #1f2937;
+        --silver-bg: rgba(203, 213, 225, 0.14);
         --bronze: #d97706;
         --bronze-contrast: #1a1206;
+        --bronze-bg: rgba(217, 119, 6, 0.18);
         --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 24px rgba(0, 0, 0, 0.35);
+        --card-watermark: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20140%22%3E%3Cg%20fill%3D%22%23ffffff%22%20opacity%3D%220.07%22%3E%3Ccircle%20cx%3D%2252%22%20cy%3D%2228%22%20r%3D%2211%22%2F%3E%3Cpolygon%20points%3D%2238%2C40%2066%2C40%2074%2C92%2030%2C92%22%2F%3E%3Crect%20x%3D%2232%22%20y%3D%2276%22%20width%3D%2240%22%20height%3D%226%22%2F%3E%3Cpath%20d%3D%22M40%2092%20L30%20132%20L40%20132%20L48%2096%20Z%22%2F%3E%3Cpath%20d%3D%22M62%2092%20L74%20128%20L64%20132%20L54%2096%20Z%22%2F%3E%3Cpath%20d%3D%22M64%2046%20L108%2054%20L104%2062%20L60%2054%20Z%22%2F%3E%3Ccircle%20cx%3D%22148%22%20cy%3D%2228%22%20r%3D%2211%22%2F%3E%3Cpolygon%20points%3D%22162%2C40%20134%2C40%20126%2C92%20170%2C92%22%2F%3E%3Crect%20x%3D%22128%22%20y%3D%2276%22%20width%3D%2240%22%20height%3D%226%22%2F%3E%3Cpath%20d%3D%22M160%2092%20L170%20132%20L160%20132%20L152%2096%20Z%22%2F%3E%3Cpath%20d%3D%22M138%2092%20L126%20128%20L136%20132%20L146%2096%20Z%22%2F%3E%3Cpath%20d%3D%22M136%2046%20L92%2054%20L96%2062%20L140%2054%20Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
       }
     }
     :root[data-theme="dark"] {
-      --bg: #10160f;
-      --card-bg: #1a2119;
-      --card-bg-alt: #1f2820;
-      --text: #f0f3ef;
-      --muted: #b7c0b6;
-      --accent: #22c55e;
-      --accent-dark: #16a34a;
-      --accent-soft: rgba(34, 197, 94, 0.18);
-      --border: #38453a;
+      --bg: #121214;
+      --card-bg: #1c1c1f;
+      --card-bg-alt: #212124;
+      --text: #f4f4f5;
+      --muted: #a1a1aa;
+      --accent: #6366f1;
+      --accent-dark: #4f46e5;
+      --accent-soft: rgba(99, 102, 241, 0.18);
+      --border: #3f3f46;
       --locked-bg: #ef4444;
       --locked: #fca5a5;
-      --open-bg: #22c55e;
-      --open: #4ade80;
+      --success: #22c55e;
       --gold: #facc15;
       --gold-contrast: #3f2d00;
+      --gold-bg: rgba(250, 204, 21, 0.18);
       --silver: #cbd5e1;
       --silver-contrast: #1f2937;
+      --silver-bg: rgba(203, 213, 225, 0.14);
       --bronze: #d97706;
       --bronze-contrast: #1a1206;
+      --bronze-bg: rgba(217, 119, 6, 0.18);
       --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 24px rgba(0, 0, 0, 0.35);
+      --card-watermark: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20200%20140%22%3E%3Cg%20fill%3D%22%23ffffff%22%20opacity%3D%220.07%22%3E%3Ccircle%20cx%3D%2252%22%20cy%3D%2228%22%20r%3D%2211%22%2F%3E%3Cpolygon%20points%3D%2238%2C40%2066%2C40%2074%2C92%2030%2C92%22%2F%3E%3Crect%20x%3D%2232%22%20y%3D%2276%22%20width%3D%2240%22%20height%3D%226%22%2F%3E%3Cpath%20d%3D%22M40%2092%20L30%20132%20L40%20132%20L48%2096%20Z%22%2F%3E%3Cpath%20d%3D%22M62%2092%20L74%20128%20L64%20132%20L54%2096%20Z%22%2F%3E%3Cpath%20d%3D%22M64%2046%20L108%2054%20L104%2062%20L60%2054%20Z%22%2F%3E%3Ccircle%20cx%3D%22148%22%20cy%3D%2228%22%20r%3D%2211%22%2F%3E%3Cpolygon%20points%3D%22162%2C40%20134%2C40%20126%2C92%20170%2C92%22%2F%3E%3Crect%20x%3D%22128%22%20y%3D%2276%22%20width%3D%2240%22%20height%3D%226%22%2F%3E%3Cpath%20d%3D%22M160%2092%20L170%20132%20L160%20132%20L152%2096%20Z%22%2F%3E%3Cpath%20d%3D%22M138%2092%20L126%20128%20L136%20132%20L146%2096%20Z%22%2F%3E%3Cpath%20d%3D%22M136%2046%20L92%2054%20L96%2062%20L140%2054%20Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
     }
     * { box-sizing: border-box; }
     body {
@@ -81,19 +90,6 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
-    }
-    .belt-bar {
-      height: 6px;
-      background: linear-gradient(
-        90deg,
-        #f8fafc 0%, #f8fafc 14%,
-        var(--gold) 14%, var(--gold) 28%,
-        #f97316 28%, #f97316 42%,
-        var(--accent) 42%, var(--accent) 57%,
-        #2563eb 57%, #2563eb 71%,
-        var(--bronze) 71%, var(--bronze) 86%,
-        #111111 86%, #111111 100%
-      );
     }
     nav {
       display: flex;
@@ -122,10 +118,13 @@
     nav .spacer { flex: 1; }
     main { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
     .card {
-      background: linear-gradient(180deg, var(--card-bg-alt) 0%, var(--card-bg) 14%);
+      overflow: hidden;
+      background:
+        var(--card-watermark) no-repeat bottom -14px right -10px / 170px auto,
+        linear-gradient(180deg, var(--card-bg-alt) 0%, var(--card-bg) 14%);
       border: 1px solid var(--border);
       border-top: 3px solid var(--accent);
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 1.25rem;
       margin-bottom: 1.5rem;
       box-shadow: var(--shadow);
@@ -140,7 +139,7 @@
       letter-spacing: 0.02em;
       text-transform: uppercase;
     }
-    .badge.open { background: var(--open-bg); color: #ffffff; }
+    .badge.open { background: var(--accent); color: #ffffff; }
     .badge.locked { background: var(--locked-bg); color: #ffffff; }
     .countdown { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 0.9rem; margin-bottom: 0.75rem; }
     table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; }
@@ -153,7 +152,7 @@
     select, input, button {
       font-size: 1rem;
       padding: 0.55rem 0.65rem;
-      border-radius: 8px;
+      border-radius: 12px;
       border: 1px solid var(--border);
       background: var(--card-bg);
       color: var(--text);
@@ -164,13 +163,13 @@
       border: none;
       cursor: pointer;
       font-weight: 700;
-      box-shadow: 0 2px 6px rgba(22, 163, 74, 0.25);
+      box-shadow: 0 2px 6px rgba(79, 70, 229, 0.25);
     }
     button:hover { opacity: 0.92; }
     label { display: block; margin-top: 1rem; margin-bottom: 0.3rem; font-weight: 600; font-size: 0.9rem; }
     form.tip-form { display: flex; flex-direction: column; }
     .error { color: var(--locked); font-weight: 600; margin: 0.5rem 0; }
-    .success { color: var(--open); font-weight: 600; margin: 0.5rem 0; }
+    .success { color: var(--success); font-weight: 600; margin: 0.5rem 0; }
     .muted { color: var(--muted); font-size: 0.85rem; }
     .rank-1 { font-weight: 700; background: rgba(234, 179, 8, 0.14); }
     .rank-1 td:first-child { border-left: 3px solid var(--gold); }
@@ -190,20 +189,25 @@
     .rank-chip.gold { background: var(--gold); color: var(--gold-contrast); }
     .rank-chip.silver { background: var(--silver); color: var(--silver-contrast); }
     .rank-chip.bronze { background: var(--bronze); color: var(--bronze-contrast); }
-    td.td-gold { border-left: 3px solid var(--gold); }
-    td.td-silver { border-left: 3px solid var(--silver); }
-    td.td-bronze { border-left: 3px solid var(--bronze); }
-    .bronze-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 0.6rem;
-      padding: 0.15rem 0;
+    td.td-gold, td.td-silver { vertical-align: middle; }
+    td.td-gold, td.td-silver, td.td-bronze {
+      border-left: 5px solid transparent;
+      padding-left: 0.75rem;
     }
-    .bronze-row + .bronze-row { border-top: 1px dashed var(--border); margin-top: 0.15rem; padding-top: 0.3rem; }
-    .bronze-label { color: var(--bronze); font-weight: 700; font-size: 0.75rem; white-space: nowrap; }
-    .bronze-value { font-weight: 600; text-align: right; }
-    .bronze-pick { font-weight: 600; padding: 0.15rem 0; }
-    .bronze-pick + .bronze-pick { border-top: 1px dashed var(--border); margin-top: 0.15rem; padding-top: 0.3rem; }
+    td.td-gold { background: var(--gold-bg); border-left-color: var(--gold); }
+    td.td-silver { background: var(--silver-bg); border-left-color: var(--silver); }
+    td.td-bronze { background: var(--bronze-bg); border-left-color: var(--bronze); }
+    .bronze-picks { display: flex; flex-direction: column; }
+    .bronze-picks > div { padding: 0.2rem 0; }
+    .bronze-picks > div + div { border-top: 1px dashed var(--border); margin-top: 0.1rem; padding-top: 0.3rem; }
+    .tip-ranks { display: flex; flex-direction: column; gap: 0.35rem; }
+    .rank-line {
+      padding: 0.35rem 0 0.35rem 0.65rem;
+      border-left: 5px solid;
+    }
+    .rank-line.gold { border-color: var(--gold); background: var(--gold-bg); }
+    .rank-line.silver { border-color: var(--silver); background: var(--silver-bg); }
+    .rank-line.bronze { border-color: var(--bronze); background: var(--bronze-bg); }
     .name-tile {
       display: flex;
       flex-direction: column;
@@ -211,7 +215,7 @@
       gap: 0.15rem;
       padding: 0.75rem 1.25rem;
       border: 1px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       background: var(--card-bg);
       color: var(--text);
       text-decoration: none;
@@ -234,7 +238,6 @@
   </style>
 </head>
 <body>
-  <div class="belt-bar"></div>
   <nav>
     <a href="/" class="brand">
       <svg class="brand-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

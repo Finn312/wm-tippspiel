@@ -1,3 +1,4 @@
+{% import "_macros.html" as macros %}
 {% if wc.locked %}
   <span class="badge locked">Gesperrt</span>
 {% else %}
@@ -22,8 +23,10 @@
         <td class="td-gold">{{ t.platz_1_name or "–" }}</td>
         <td class="td-silver">{{ t.platz_2_name or "–" }}</td>
         <td class="td-bronze">
-          <div class="bronze-pick">{{ t.platz_3a_name or "–" }}</div>
-          <div class="bronze-pick">{{ t.platz_3b_name or "–" }}</div>
+          <div class="bronze-picks">
+            {{ macros.bronze_line(t.platz_3a_name) }}
+            {{ macros.bronze_line(t.platz_3b_name) }}
+          </div>
         </td>
         {% if wc.show_points %}<td>{{ t.points if t.points is not none else "–" }}</td>{% endif %}
       {% else %}

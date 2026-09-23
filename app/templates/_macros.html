@@ -1,0 +1,7 @@
+{% macro bronze_line(name) -%}
+<div>{{ name or "–" }}</div>
+{%- endmacro %}
+
+{% macro rank_line(name, rank) -%}
+<div class="rank-line {{ rank }}">{{ name or "–" }}</div>
+{%- endmacro %}

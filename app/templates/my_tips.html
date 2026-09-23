@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "_macros.html" as macros %}
 {% block title %}Meine Tipps{% endblock %}
 {% block content %}
 <h2>Meine Tipps</h2>
@@ -25,10 +26,12 @@
         </td>
         <td>
           {% if row.tip %}
-            <div class="bronze-row"><span class="rank-chip gold">1</span><span class="bronze-value">{{ row.tip.platz_1_name or "–" }}</span></div>
-            <div class="bronze-row"><span class="rank-chip silver">2</span><span class="bronze-value">{{ row.tip.platz_2_name or "–" }}</span></div>
-            <div class="bronze-row"><span class="bronze-label">Bronze</span><span class="bronze-value">{{ row.tip.platz_3a_name or "–" }}</span></div>
-            <div class="bronze-row"><span class="bronze-label">Bronze</span><span class="bronze-value">{{ row.tip.platz_3b_name or "–" }}</span></div>
+            <div class="tip-ranks">
+              {{ macros.rank_line(row.tip.platz_1_name, "gold") }}
+              {{ macros.rank_line(row.tip.platz_2_name, "silver") }}
+              {{ macros.rank_line(row.tip.platz_3a_name, "bronze") }}
+              {{ macros.rank_line(row.tip.platz_3b_name, "bronze") }}
+            </div>
           {% else %}
             <span class="muted">Kein Tipp abgegeben.</span>
           {% endif %}
