@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from app.auth import ADMIN_COOKIE, ADMIN_SECRET, is_admin_request
 from app.database import get_db
-from app.models import Athlete, Result, User, WeightClass
+from app.models import Athlete, Result, Tip, User, WeightClass
 from app.schemas import ResultIn
 from app.templating import templates
 from app.validation import validate_athlete_slots
@@ -145,6 +145,26 @@ def admin_users_create(request: Request, name: str = Form(...), db: Session = De
 
     if not error:
         db.add(User(name=name, pin=None))
+        db.commit()
+
+    users = db.query(User).order_by(User.name).all()
+    return templates.TemplateResponse(
+        "admin_users.html", {"request": request, "current_user": None, "users": users, "error": error}
+    )
+
+
+@router.post("/users/{user_id}/delete")
+def admin_users_delete(user_id: int, request: Request, db: Session = Depends(get_db)):
+    if not is_admin_request(request):
+        return RedirectResponse(url="/admin/login", status_code=303)
+
+    user = db.get(User, user_id)
+    error = None
+    if user is None:
+        error = "Nutzer nicht gefunden"
+    else:
+        db.query(Tip).filter(Tip.user_id == user.id).delete(synchronize_session=False)
+        db.delete(user)
         db.commit()
 
     users = db.query(User).order_by(User.name).all()

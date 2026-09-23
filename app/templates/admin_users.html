@@ -14,15 +14,22 @@
 <div class="card">
   <h3>Bestehende Nutzer</h3>
   <table>
-    <thead><tr><th>Name</th><th>PIN gesetzt?</th></tr></thead>
+    <thead><tr><th>Name</th><th>PIN</th><th>Tipps</th><th></th></tr></thead>
     <tbody>
       {% for u in users %}
       <tr>
         <td>{{ u.name }}</td>
-        <td>{{ "Ja" if u.pin else "Nein" }}</td>
+        <td>{{ u.pin if u.pin else "–" }}</td>
+        <td>{{ u.tips|length }}</td>
+        <td>
+          <form method="post" action="/admin/users/{{ u.id }}/delete" style="margin:0;"
+                onsubmit="return confirm('{{ u.name }} wirklich löschen?{% if u.tips %} Alle {{ u.tips|length }} Tipps werden mitgelöscht.{% endif %}');">
+            <button type="submit" style="padding:0.3rem 0.6rem; background:var(--locked);">Löschen</button>
+          </form>
+        </td>
       </tr>
       {% else %}
-      <tr><td colspan="2" class="muted">Keine Nutzer vorhanden.</td></tr>
+      <tr><td colspan="4" class="muted">Keine Nutzer vorhanden.</td></tr>
       {% endfor %}
     </tbody>
   </table>
