@@ -115,10 +115,9 @@
     nav .brand-icon { color: var(--accent); flex: none; }
     nav a:not(.brand) { color: var(--text); text-decoration: none; font-weight: 600; }
     nav a:not(.brand):hover { color: var(--accent); }
-    nav .spacer { flex: 1; }
+    .brand { order: 1; }
     .nav-toggle {
       display: none;
-      margin-left: auto;
       background: transparent;
       border: 1px solid var(--border);
       color: var(--text);
@@ -131,30 +130,39 @@
       flex: none;
     }
     .nav-toggle:hover { opacity: 0.85; }
-    .nav-menu { display: flex; align-items: center; gap: 1.25rem; flex: 1; flex-wrap: wrap; }
+    .nav-menu { order: 2; display: flex; align-items: center; gap: 1.25rem; flex: 1; flex-wrap: wrap; }
+    .nav-actions { order: 3; display: flex; align-items: center; gap: 0.75rem; flex: none; }
     .nav-user { display: flex; align-items: center; gap: 0.75rem; }
+    nav a.nav-login-btn {
+      display: inline-flex;
+      align-items: center;
+      color: var(--accent-contrast);
+      background: var(--accent);
+      padding: 0.35rem 0.75rem;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+    nav a.nav-login-btn:hover { color: var(--accent-contrast); opacity: 0.9; }
     @media (max-width: 640px) {
       .nav-toggle { display: inline-flex; }
+      .nav-actions { order: 2; margin-left: auto; }
       .nav-menu {
+        order: 3;
         display: none;
         flex-direction: column;
         align-items: stretch;
         width: 100%;
+        flex: none;
         gap: 0.15rem;
         margin-top: 0.75rem;
-        flex: none;
       }
       .nav-menu.open { display: flex; }
-      .nav-menu .spacer { display: none; }
       .nav-menu a:not(.brand) { padding: 0.65rem 0.4rem; border-radius: 8px; }
       .nav-menu a:not(.brand):hover { background: var(--accent-soft); }
-      .nav-user {
-        flex-direction: row;
-        justify-content: space-between;
-        border-top: 1px solid var(--border);
-        margin-top: 0.4rem;
-        padding-top: 0.75rem;
-      }
+    }
+    @media (max-width: 385px) {
+      nav .brand span { display: none; }
+      nav .brand { margin-right: 0; }
     }
     main { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
     .card {
@@ -324,17 +332,18 @@
       </svg>
       <span>Judo-Tippspiel</span>
     </a>
-    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="nav-menu">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>
-    </button>
     <div class="nav-menu" id="nav-menu">
       <a href="/">Tagesansicht</a>
       {% if current_user %}<a href="/my-tips">Meine Tipps</a>{% endif %}
       <a href="/leaderboard">Leaderboard</a>
       <a href="/info">Info</a>
-      <div class="spacer"></div>
+    </div>
+    <div class="nav-actions">
+      <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="nav-menu">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
       {% if current_user %}
         <div class="nav-user">
           <span class="muted">{{ current_user.name }}</span>
@@ -343,7 +352,7 @@
           </form>
         </div>
       {% else %}
-        <a href="/login">Login</a>
+        <a href="/login" class="nav-login-btn">Login</a>
       {% endif %}
     </div>
   </nav>
