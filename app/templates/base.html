@@ -116,6 +116,46 @@
     nav a:not(.brand) { color: var(--text); text-decoration: none; font-weight: 600; }
     nav a:not(.brand):hover { color: var(--accent); }
     nav .spacer { flex: 1; }
+    .nav-toggle {
+      display: none;
+      margin-left: auto;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.4rem;
+      border-radius: 10px;
+      box-shadow: none;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+    }
+    .nav-toggle:hover { opacity: 0.85; }
+    .nav-menu { display: flex; align-items: center; gap: 1.25rem; flex: 1; flex-wrap: wrap; }
+    .nav-user { display: flex; align-items: center; gap: 0.75rem; }
+    @media (max-width: 640px) {
+      .nav-toggle { display: inline-flex; }
+      .nav-menu {
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        gap: 0.15rem;
+        margin-top: 0.75rem;
+        flex: none;
+      }
+      .nav-menu.open { display: flex; }
+      .nav-menu .spacer { display: none; }
+      .nav-menu a:not(.brand) { padding: 0.65rem 0.4rem; border-radius: 8px; }
+      .nav-menu a:not(.brand):hover { background: var(--accent-soft); }
+      .nav-user {
+        flex-direction: row;
+        justify-content: space-between;
+        border-top: 1px solid var(--border);
+        margin-top: 0.4rem;
+        padding-top: 0.75rem;
+      }
+    }
     main { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 3rem; }
     .card {
       overflow: hidden;
@@ -284,19 +324,28 @@
       </svg>
       <span>Judo-Tippspiel</span>
     </a>
-    <a href="/">Tagesansicht</a>
-    {% if current_user %}<a href="/my-tips">Meine Tipps</a>{% endif %}
-    <a href="/leaderboard">Leaderboard</a>
-    <a href="/info">Info</a>
-    <div class="spacer"></div>
-    {% if current_user %}
-      <span class="muted">{{ current_user.name }}</span>
-      <form method="post" action="/logout" style="margin:0;">
-        <button type="submit" style="padding:0.3rem 0.6rem;">Logout</button>
-      </form>
-    {% else %}
-      <a href="/login">Login</a>
-    {% endif %}
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="nav-menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div class="nav-menu" id="nav-menu">
+      <a href="/">Tagesansicht</a>
+      {% if current_user %}<a href="/my-tips">Meine Tipps</a>{% endif %}
+      <a href="/leaderboard">Leaderboard</a>
+      <a href="/info">Info</a>
+      <div class="spacer"></div>
+      {% if current_user %}
+        <div class="nav-user">
+          <span class="muted">{{ current_user.name }}</span>
+          <form method="post" action="/logout" style="margin:0;">
+            <button type="submit" style="padding:0.3rem 0.6rem;">Logout</button>
+          </form>
+        </div>
+      {% else %}
+        <a href="/login">Login</a>
+      {% endif %}
+    </div>
   </nav>
   <main>
     {% block content %}{% endblock %}
@@ -323,6 +372,33 @@
     }
     document.addEventListener('DOMContentLoaded', startCountdowns);
     document.body.addEventListener('htmx:afterSwap', startCountdowns);
+
+    (function () {
+      const toggle = document.getElementById('nav-toggle');
+      const menu = document.getElementById('nav-menu');
+      if (!toggle || !menu) return;
+      function closeMenu() {
+        menu.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+      function openMenu() {
+        menu.classList.add('open');
+        toggle.setAttribute('aria-expanded', 'true');
+      }
+      toggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (menu.classList.contains('open')) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      });
+      document.addEventListener('click', function (e) {
+        if (menu.classList.contains('open') && !menu.contains(e.target) && !toggle.contains(e.target)) {
+          closeMenu();
+        }
+      });
+    })();
   </script>
 </body>
 </html>
