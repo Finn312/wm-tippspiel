@@ -9,6 +9,7 @@
   <h3>{{ row.wc_name }}</h3>
   {% if row.visible %}
     {% if row.tip %}
+      <div class="tip-table-wrap">
       <table>
         <thead>
           <tr>
@@ -32,6 +33,21 @@
           </tr>
         </tbody>
       </table>
+      </div>
+
+      <div class="tip-cards-mobile">
+        <div class="tip-card">
+          {% if row.points is not none %}
+            <p class="tip-card-points" style="text-align: right; margin: 0 0 0.5rem;">{{ row.points }} Pkt.</p>
+          {% endif %}
+          <div class="tip-ranks">
+            {{ macros.rank_line(row.tip.platz_1_name, "gold", "1") }}
+            {{ macros.rank_line(row.tip.platz_2_name, "silver", "2") }}
+            {{ macros.rank_line(row.tip.platz_3a_name, "bronze", "3") }}
+            {{ macros.rank_line(row.tip.platz_3b_name, "bronze", "3") }}
+          </div>
+        </div>
+      </div>
     {% else %}
       <p class="muted">Kein Tipp abgegeben.</p>
     {% endif %}

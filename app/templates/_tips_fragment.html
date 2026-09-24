@@ -5,6 +5,7 @@
   <span class="badge open">Offen</span>
 {% endif %}
 
+<div class="tip-table-wrap">
 <table>
   <thead>
     <tr>
@@ -38,6 +39,32 @@
     {% endfor %}
   </tbody>
 </table>
+</div>
+
+<div class="tip-cards-mobile">
+  {% for t in wc.tip_rows %}
+  <div class="tip-card">
+    <div class="tip-card-header">
+      <a class="user-link" href="/users/{{ t.user_id }}">{{ t.user_name }}</a>
+      {% if wc.show_points and t.visible %}
+        <span class="tip-card-points">{{ t.points if t.points is not none else "–" }} Pkt.</span>
+      {% endif %}
+    </div>
+    {% if t.visible %}
+      <div class="tip-ranks">
+        {{ macros.rank_line(t.platz_1_name, "gold", "1") }}
+        {{ macros.rank_line(t.platz_2_name, "silver", "2") }}
+        {{ macros.rank_line(t.platz_3a_name, "bronze", "3") }}
+        {{ macros.rank_line(t.platz_3b_name, "bronze", "3") }}
+      </div>
+    {% else %}
+      <p class="muted">🔒 getippt – verborgen bis Kampfbeginn</p>
+    {% endif %}
+  </div>
+  {% else %}
+  <p class="muted">Noch keine Tipps abgegeben.</p>
+  {% endfor %}
+</div>
 
 {% if wc.editable %}
   {% if wc.logged_in %}

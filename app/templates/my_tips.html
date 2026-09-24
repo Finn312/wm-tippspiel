@@ -4,6 +4,7 @@
 {% block content %}
 <h2>Meine Tipps</h2>
 <div class="card">
+  <div class="tip-table-wrap">
   <table>
     <thead>
       <tr>
@@ -49,5 +50,41 @@
       {% endfor %}
     </tbody>
   </table>
+  </div>
+
+  <div class="tip-cards-mobile">
+    {% for row in rows %}
+    <div class="tip-card">
+      <div class="tip-card-header">
+        <span>{{ row.name }}</span>
+        {% if row.editable %}
+          <span class="badge open">Offen</span>
+        {% else %}
+          <span class="badge locked">Gesperrt</span>
+        {% endif %}
+      </div>
+      {% if row.tip %}
+        <div class="tip-ranks">
+          {{ macros.rank_line(row.tip.platz_1_name, "gold", "1") }}
+          {{ macros.rank_line(row.tip.platz_2_name, "silver", "2") }}
+          {{ macros.rank_line(row.tip.platz_3a_name, "bronze", "3") }}
+          {{ macros.rank_line(row.tip.platz_3b_name, "bronze", "3") }}
+        </div>
+      {% else %}
+        <p class="muted">Kein Tipp abgegeben.</p>
+      {% endif %}
+      {% if row.points is not none or row.editable %}
+        <div class="tip-card-footer">
+          <span class="tip-card-points">{% if row.points is not none %}{{ row.points }} Pkt.{% endif %}</span>
+          {% if row.editable %}
+            <a href="/weight-classes/{{ row.id }}/tip">{% if row.tip %}Bearbeiten{% else %}Tippen{% endif %}</a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+    {% else %}
+    <p class="muted">Keine Gewichtsklassen vorhanden.</p>
+    {% endfor %}
+  </div>
 </div>
 {% endblock %}

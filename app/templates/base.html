@@ -200,14 +200,51 @@
     .bronze-picks { display: flex; flex-direction: column; }
     .bronze-picks > div { padding: 0.2rem 0; }
     .bronze-picks > div + div { border-top: 1px dashed var(--border); margin-top: 0.1rem; padding-top: 0.3rem; }
-    .tip-ranks { display: flex; flex-direction: column; gap: 0.35rem; }
+    .tip-ranks { display: block; }
     .rank-line {
-      padding: 0.35rem 0 0.35rem 0.65rem;
+      padding: 0.35rem 0.5rem 0.35rem 0.65rem;
       border-left: 5px solid;
+      overflow-wrap: break-word;
+      box-sizing: border-box;
     }
+    .rank-line + .rank-line { margin-top: 0.35rem; }
     .rank-line.gold { border-color: var(--gold); background: var(--gold-bg); }
     .rank-line.silver { border-color: var(--silver); background: var(--silver-bg); }
     .rank-line.bronze { border-color: var(--bronze); background: var(--bronze-bg); }
+    .tip-cards-mobile { display: none; }
+    .tip-card {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.75rem 0.85rem;
+      background: var(--card-bg-alt);
+    }
+    .tip-card + .tip-card { margin-top: 0.75rem; }
+    .tip-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      overflow-wrap: break-word;
+    }
+    .tip-card-points { color: var(--muted); font-size: 0.85rem; font-weight: 600; white-space: nowrap; }
+    .tip-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 0.6rem;
+      padding-top: 0.5rem;
+      border-top: 1px dashed var(--border);
+    }
+    @media (max-width: 640px) {
+      .tip-table-wrap { display: none; }
+      .tip-cards-mobile { display: block; }
+      .card {
+        background: linear-gradient(180deg, var(--card-bg-alt) 0%, var(--card-bg) 14%);
+      }
+    }
     .name-tile {
       display: flex;
       flex-direction: column;

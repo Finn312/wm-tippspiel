@@ -2,6 +2,6 @@
 <div>{{ name or "–" }}</div>
 {%- endmacro %}
 
-{% macro rank_line(name, rank) -%}
-<div class="rank-line {{ rank }}">{{ name or "–" }}</div>
+{% macro rank_line(name, rank, label=None) -%}
+<div class="rank-line {{ rank }}">{% if label %}<span class="rank-chip {{ rank }}">{{ label }}</span>{% endif %}{{ name or "–" }}</div>
 {%- endmacro %}
