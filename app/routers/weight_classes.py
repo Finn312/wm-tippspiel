@@ -1,4 +1,4 @@
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -15,12 +15,12 @@ EDIT_CUTOFF = timedelta(minutes=30)
 
 def is_locked(weight_class: WeightClass) -> bool:
     """Reveal-Sperre: ab kampfbeginn sind Tipps aller Nutzer für alle sichtbar."""
-    return datetime.now() >= weight_class.kampfbeginn
+    return datetime.now(timezone.utc) >= weight_class.kampfbeginn
 
 
 def is_edit_locked(weight_class: WeightClass) -> bool:
     """Editier-Sperre: Tipps sind nur bis 30 Minuten vor kampfbeginn änderbar."""
-    return datetime.now() >= weight_class.kampfbeginn - EDIT_CUTOFF
+    return datetime.now(timezone.utc) >= weight_class.kampfbeginn - EDIT_CUTOFF
 
 
 def to_out(weight_class: WeightClass) -> WeightClassOut:

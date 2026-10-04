@@ -1,6 +1,7 @@
 import csv
 import io
-from datetime import datetime
+from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import RedirectResponse
@@ -15,6 +16,8 @@ from app.templating import templates
 from app.validation import validate_athlete_slots
 
 router = APIRouter(prefix="/admin", tags=["admin-pages"])
+
+BERLIN_TZ = ZoneInfo("Europe/Berlin")
 
 
 def _result_context(db: Session, wc: WeightClass) -> dict:
@@ -114,10 +117,14 @@ def admin_result_submit(
 
 
 def _wc_edit_context(wc: WeightClass, success: bool = False, error: str | None = None) -> dict:
+    """kampfbeginn wird in Europe/Berlin-Wandzeit angezeigt/editiert, auch wenn
+    intern als UTC gespeichert wird - das datetime-local-Feld traegt keine
+    eigene Zeitzoneninfo und soll die Zeit zeigen, die der Admin gemeint hat."""
+    local = wc.kampfbeginn.astimezone(BERLIN_TZ)
     return {
         "id": wc.id,
         "name": wc.name,
-        "kampfbeginn_input": wc.kampfbeginn.strftime("%Y-%m-%dT%H:%M"),
+        "kampfbeginn_input": local.strftime("%Y-%m-%dT%H:%M"),
         "success": success,
         "error": error,
     }
@@ -208,8 +215,9 @@ def admin_weight_class_submit(
     except ValueError:
         error = "Ungültiges Datum/Uhrzeit-Format"
     else:
-        wc.kampfbeginn = parsed
-        wc.tag = parsed.date()
+        parsed_berlin = parsed.replace(tzinfo=BERLIN_TZ)
+        wc.kampfbeginn = parsed_berlin.astimezone(timezone.utc)
+        wc.tag = parsed_berlin.date()
         db.commit()
         db.refresh(wc)
 

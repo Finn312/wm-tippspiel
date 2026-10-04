@@ -21,7 +21,7 @@ class WeightClass(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(50), nullable=False)
-    kampfbeginn: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    kampfbeginn: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     tag: Mapped[date] = mapped_column(Date, nullable=False)
 
     athletes: Mapped[list["Athlete"]] = relationship(back_populates="weight_class")
